@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Sale</h1>
+
+    {# @var sale \AppBundle\Entity\Sales #}
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ sale.id }}</td>
+        </tr>
+        <tr>
+            <th>Car Make</th>
+            <td>{{ sale.car.make }}</td>
+        </tr>
+        <tr>
+            <th>Car Model</th>
+            <td>{{ sale.car.model }}</td>
+        </tr>
+        <tr>
+            <th>Customer Name</th>
+            <td>{{ sale.customer.name }}</td>
+        </tr>
+        <tr>
+            <th>Discount</th>
+            <td>{{ sale.discount }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <div>
+        <a href="{{ path('sales_index') }}">Back to the list</a>
+    </div>
+
+{% endblock %}

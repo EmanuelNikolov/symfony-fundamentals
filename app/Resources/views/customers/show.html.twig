@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Customer</h1>
+
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <th>Name</th>
+            <td>{{ customer.name }}</td>
+        </tr>
+        <tr>
+            <th>Birth Date</th>
+            <td>{% if customer.birthDate %}{{ customer.birthDate|date('Y-m-d') }}{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Young Driver</th>
+            <td>{% if customer.isYoungDriver %}Yes{% else %}No{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Id</th>
+            <td>{{ customer.id }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="row">
+        {% block sales %}{% endblock %}
+    </div>
+
+    <div>
+        <a href="{{ path('customers_index') }}">Back to the list</a>
+    </div>
+{% endblock %}

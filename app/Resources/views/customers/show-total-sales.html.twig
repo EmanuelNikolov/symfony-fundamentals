@@ -1,0 +1,29 @@
+{% extends 'customers/show.html.twig' %}
+
+{# @var customer \AppBundle\Entity\Customers #}
+{% block sales %}
+    {# @var sale \AppBundle\Entity\Sales #}
+    {% for sale in customer.sales %}
+        <div class="col-lg-6 col-md-6 col-sm-12 container-fluid">
+        <table class="table table-bordered table-sm">
+            <tbody>
+
+            <tr class="d-flex">
+                <th class="col-lg-2">Car</th>
+                <td class="col-lg-10">{{ sale.car.make }} {{ sale.car.model }}</td>
+            </tr>
+            <tr class="d-flex">
+                <th class="col-lg-2">Discount</th>
+                <td class="col-lg-10">{{ sale.discount }}</td>
+            </tr>
+            <tr class="d-flex">
+                <th class="col-lg-2">Sale ID</th>
+                <td class="col-lg-10">{{ sale.id }}</td>
+            </tr>
+            <br>
+            </tbody>
+        </table>
+        </div>
+    {% endfor %}
+{% endblock %}
+
