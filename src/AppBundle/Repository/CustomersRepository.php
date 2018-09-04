@@ -28,18 +28,21 @@ class CustomersRepository extends EntityRepository
           ? self::VALID_ORDER_BY[$order]
           : null;
 
-        return $this->createQueryBuilder('customers')
-          ->orderBy('customers.birthDate', $orderSanitized)
+        return $this->createQueryBuilder('c')
+          ->orderBy('c.birthDate', $orderSanitized)
           ->getQuery()
           ->getResult();
     }
 
     public function getCustomerTotalSales(int $id)
     {
-        return $this->createQueryBuilder('customers')
-          ->where('customers.id = :id')
+        return $this->createQueryBuilder('c')
+          ->where('c.id = :id')
           ->setParameter('id', $id)
-          ->leftJoin('customers.sales', 's')
-          ->getQuery()->getOneOrNullResult();
+          ->leftJoin('c.sales', 'cs')
+          ->leftJoin('cs.car', 'sc')
+          ->addSelect('cs, sc')
+          ->getQuery()
+          ->getOneOrNullResult();
     }
 }

@@ -15,15 +15,11 @@ class CarsRepository extends EntityRepository
 {
     public function getAllCarsByMake(string $make)
     {
-        $thing = 'string';
-
-        return $this->createQueryBuilder(Cars::class)
-          ->select('cars')
-          ->from('AppBundle:Cars', 'cars')
-          ->where('cars.make = :make')
+        return $this->createQueryBuilder('c')
+          ->where('c.make = :make')
           ->setParameter('make', $make)
-          ->addOrderBy('cars.model', 'ASC')
-          ->addOrderBy('cars.travelledDistance', 'DESC')
+          ->addOrderBy('c.model', 'ASC')
+          ->addOrderBy('c.travelledDistance', 'DESC')
           ->getQuery()
           ->getResult();
     }

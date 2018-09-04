@@ -16,27 +16,28 @@ class SalesRepository extends EntityRepository
 
     public function getSalesFullInfo(int $id)
     {
-        return $this->createQueryBuilder('sales')
-          ->where('sales.id = :id')
+        return $this->createQueryBuilder('s')
+          ->where('s.id = :id')
           ->setParameter('id', $id)
-          ->leftJoin('sales.car', 'car')
-          ->leftJoin('sales.customer', 'customer')
+          ->leftJoin('s.car', 'sc')
+          ->leftJoin('s.customer', 'scu')
+          ->addSelect('sc, scu')
           ->getQuery()
           ->getOneOrNullResult();
     }
 
     public function getAllDiscountedSales()
     {
-        return $this->createQueryBuilder('sales')
-          ->where('sales.discount > 0')
+        return $this->createQueryBuilder('s')
+          ->where('s.discount > 0')
           ->getQuery()
           ->getResult();
     }
 
     public function getDiscountedSalesByPercent(float $percent)
     {
-        return $this->createQueryBuilder('sales')
-          ->where('sales.discount = :percent')
+        return $this->createQueryBuilder('s')
+          ->where('s.discount = :percent')
           ->setParameter('percent', $percent, FloatType::FLOAT)
           ->getQuery()
           ->getResult();

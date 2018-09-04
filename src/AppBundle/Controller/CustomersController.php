@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Customers;
+use AppBundle\Form\CustomersType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -80,6 +82,41 @@ class CustomersController extends Controller
 
         return $this->render('customers/show-total-sales.html.twig', [
           'customer' => $customer,
+        ]);
+    }
+
+    /**
+     * @Route("/edit/{id}", name="customer_edit", requirements={"id" = "\d+"})
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param int $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction(Request $request, int $id)
+    {
+        $customer = $this->getDoctrine()
+          ->getRepository(Customers::class)
+          ->find($id);
+
+        if (null === $customer) {
+            throw new NotFoundHttpException("No user with that ID exists.");
+        }
+
+        $form = $this->createForm(CustomersType::class, $customer);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($customer);
+            $em->flush();
+
+            return $this->redirectToRoute("customers_show", [
+              'id' => $id
+            ]);
+        }
+
+        return $this->render("customers/edit.html.twig", [
+          'form' => $form->createView(),
         ]);
     }
 }

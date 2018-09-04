@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Customer</h1>
+    <h1>Customer</h1><a href="{{ path('customer_edit', { 'id': customer.id }) }}">Edit</a>
 
     <table class="table table-bordered">
         <tbody>
