@@ -2,13 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Sales;
+use AppBundle\Entity\Sale;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Sale controller.
+ * Sales controller.
  *
  * @Route("sales")
  */
@@ -24,7 +24,7 @@ class SalesController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $sales = $em->getRepository(Sales::class)->findAll();
+        $sales = $em->getRepository(Sale::class)->findAll();
 
         return $this->render('sales/index.html.twig', [
           'sales' => $sales,
@@ -46,7 +46,7 @@ class SalesController extends Controller
      */
     public function showAction(int $id)
     {
-        $em = $this->getDoctrine()->getRepository(Sales::class);
+        $em = $this->getDoctrine()->getRepository(Sale::class);
         $sale = $em->getSalesFullInfo($id);
 
         return $this->render('sales/show.html.twig', [
@@ -63,7 +63,7 @@ class SalesController extends Controller
      */
     public function showDiscountedAction()
     {
-        $em = $this->getDoctrine()->getRepository(Sales::class);
+        $em = $this->getDoctrine()->getRepository(Sale::class);
         $sales = $em->getAllDiscountedSales();
 
         if (empty($sales)) {
@@ -93,7 +93,7 @@ class SalesController extends Controller
         $percent = floatval(round($percent / 100, 2));
 
         $em = $this->getDoctrine()->getManager();
-        $sales = $em->getRepository(Sales::class)
+        $sales = $em->getRepository(Sale::class)
           ->getDiscountedSalesByPercent($percent);
 
         if (empty($sales)) {

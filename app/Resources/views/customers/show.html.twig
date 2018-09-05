@@ -1,8 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Customer</h1><a href="{{ path('customer_edit', { 'id': customer.id }) }}">Edit</a>
+    <h1>Customer</h1>
 
+    <div class="mb-3">
+        <a href="{{ path('customer_edit', { 'id': customer.id }) }}">Edit</a>
+    </div>
+    
     <table class="table table-bordered">
         <tbody>
         <tr>

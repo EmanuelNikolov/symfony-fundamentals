@@ -6,13 +6,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Customers
+ * Customer
  *
  * @ORM\Table(name="customers")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CustomersRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CustomerRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
-class Customers
+class Customer
 {
+
+    const YOUNG_DRIVER_DIFF = 'P2Y';
 
     /**
      * @var string
@@ -45,7 +48,7 @@ class Customers
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Sales", mappedBy="customer")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Sale", mappedBy="customer")
      */
     private $sales;
 
@@ -82,7 +85,7 @@ class Customers
     /**
      * @param string $name
      *
-     * @return Customers
+     * @return Customer
      */
     public function setName($name)
     {
@@ -101,7 +104,7 @@ class Customers
     /**
      * @param \DateTime $birthDate
      *
-     * @return Customers
+     * @return Customer
      */
     public function setBirthDate($birthDate)
     {
@@ -118,13 +121,22 @@ class Customers
     }
 
     /**
-     * @param bool $isYoungDriver
-     *
-     * @return Customers
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     * @return Customer
+     * @throws \Exception
      */
-    public function setIsYoungDriver($isYoungDriver)
+    public function setIsYoungDriver()
     {
-        $this->isYoungDriver = $isYoungDriver;
+        $bday = clone $this->birthDate;
+        $bday->add(new \DateInterval(self::YOUNG_DRIVER_DIFF));
+
+        if ($bday >= new \DateTime('now')) {
+            $this->isYoungDriver = true;
+        } else {
+            $this->isYoungDriver = false;
+        }
+
         return $this;
     }
 }

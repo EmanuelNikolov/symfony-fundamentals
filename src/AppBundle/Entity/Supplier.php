@@ -6,12 +6,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Suppliers
+ * Supplier
  *
  * @ORM\Table(name="suppliers")
  * @ORM\Entity
  */
-class Suppliers
+class Supplier
 {
 
     /**
@@ -38,7 +38,7 @@ class Suppliers
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Parts", mappedBy="supplier")
+     * @ORM\OneToMany(targetEntity="Part", mappedBy="supplier")
      */
     private $parts;
 
@@ -74,7 +74,7 @@ class Suppliers
     /**
      * @param string $name
      *
-     * @return Suppliers
+     * @return Supplier
      */
     public function setName($name)
     {
@@ -93,7 +93,7 @@ class Suppliers
     /**
      * @param bool $isImporter
      *
-     * @return Suppliers
+     * @return Supplier
      */
     public function setIsImporter($isImporter)
     {

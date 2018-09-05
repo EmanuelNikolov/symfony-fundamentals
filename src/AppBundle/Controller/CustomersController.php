@@ -2,15 +2,15 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Customers;
-use AppBundle\Form\CustomersType;
+use AppBundle\Entity\Customer;
+use AppBundle\Form\CustomerType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Customer controller.
+ * Customers controller.
  *
  * @Route("customers")
  */
@@ -28,7 +28,7 @@ class CustomersController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $customers = $em->getRepository(Customers::class)->findAll();
+        $customers = $em->getRepository(Customer::class)->findAll();
 
         return $this->render('customers/index.html.twig', [
           'customers' => $customers,
@@ -48,7 +48,7 @@ class CustomersController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $customers = $em->getRepository(Customers::class)
+        $customers = $em->getRepository(Customer::class)
           ->getAllCustomersByGivenOrder($order);
 
         if (empty($customers)) {
@@ -63,7 +63,11 @@ class CustomersController extends Controller
     /**
      * Finds and displays a customer entity with total sales.
      *
-     * @Route("/{id}", name="customers_show", methods={"GET"})
+     * @Route("/{id}",
+     *     name="customers_show",
+     *     methods={"GET"},
+     *     requirements={"id" = "\d+"}
+     * )
      * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -72,16 +76,41 @@ class CustomersController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $customer = $em->getRepository(Customers::class)
+        $customer = $em->getRepository(Customer::class)
           ->getCustomerTotalSales($id);
 
         if (null === $customer) {
             throw new NotFoundHttpException("Customer not found.");
         }
 
-
         return $this->render('customers/show-total-sales.html.twig', [
           'customer' => $customer,
+        ]);
+    }
+
+    /**
+     * @Route("/add", name="customer_add")
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function addAction(Request $request)
+    {
+        $customer = new Customer();
+
+        $form = $this->createForm(CustomerType::class, $customer);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($customer);
+            $em->flush();
+
+            return $this->redirectToRoute("customers_index");
+        }
+
+        return $this->render("customers/form.html.twig", [
+          'form' => $form->createView(),
         ]);
     }
 
@@ -95,14 +124,14 @@ class CustomersController extends Controller
     public function editAction(Request $request, int $id)
     {
         $customer = $this->getDoctrine()
-          ->getRepository(Customers::class)
+          ->getRepository(Customer::class)
           ->find($id);
 
         if (null === $customer) {
             throw new NotFoundHttpException("No user with that ID exists.");
         }
 
-        $form = $this->createForm(CustomersType::class, $customer);
+        $form = $this->createForm(CustomerType::class, $customer);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -111,11 +140,11 @@ class CustomersController extends Controller
             $em->flush();
 
             return $this->redirectToRoute("customers_show", [
-              'id' => $id
+              'id' => $id,
             ]);
         }
 
-        return $this->render("customers/edit.html.twig", [
+        return $this->render("customers/form.html.twig", [
           'form' => $form->createView(),
         ]);
     }

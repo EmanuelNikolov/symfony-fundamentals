@@ -2,13 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Cars;
+use AppBundle\Entity\Car;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Car controller.
+ * Cars controller.
  *
  * @Route("cars")
  */
@@ -26,7 +26,7 @@ class CarsController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $cars = $em->getRepository(Cars::class)->findAll();
+        $cars = $em->getRepository(Car::class)->findAll();
 
 
 
@@ -47,7 +47,7 @@ class CarsController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $cars = $em->getRepository(Cars::class)
+        $cars = $em->getRepository(Car::class)
           ->getAllCarsByMake($make);
 
         if (empty($cars)) {
@@ -63,11 +63,11 @@ class CarsController extends Controller
      * Finds and displays a car entity.
      *
      * @Route("/show/{id}", name="cars_show", methods={"GET"})
-     * @param \AppBundle\Entity\Cars $car
+     * @param \AppBundle\Entity\Car $car
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Cars $car)
+    public function showAction(Car $car)
     {
 
         return $this->render('cars/show.html.twig', [

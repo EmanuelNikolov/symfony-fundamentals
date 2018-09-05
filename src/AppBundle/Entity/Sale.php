@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Sales
+ * Sale
  *
  * @ORM\Table(name="sales", indexes={@ORM\Index(name="FK_sales_customers", columns={"customer_id"})})
- * @ORM\Entity(repositoryClass="AppBundle\Repository\SalesRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SaleRepository")
  */
-class Sales
+class Sale
 {
 
     /**
@@ -31,15 +31,15 @@ class Sales
     private $id;
 
     /**
-     * @var \AppBundle\Entity\Cars
+     * @var \AppBundle\Entity\Car
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Cars")
+     * @ORM\ManyToOne(targetEntity="Car")
      * @ORM\JoinColumn(name="car_id", referencedColumnName="id")
      */
     private $car;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Customers", inversedBy="sales")
+     * @ORM\ManyToOne(targetEntity="Customer", inversedBy="sales")
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      * })
@@ -65,7 +65,7 @@ class Sales
     /**
      * @param float $discount
      *
-     * @return Sales
+     * @return Sale
      */
     public function setDiscount($discount)
     {
@@ -74,7 +74,7 @@ class Sales
     }
 
     /**
-     * @return \AppBundle\Entity\Cars
+     * @return \AppBundle\Entity\Car
      */
     public function getCar()
     {
@@ -82,9 +82,9 @@ class Sales
     }
 
     /**
-     * @param \AppBundle\Entity\Cars $car
+     * @param \AppBundle\Entity\Car $car
      *
-     * @return Sales
+     * @return Sale
      */
     public function setCar($car)
     {
@@ -93,7 +93,7 @@ class Sales
     }
 
     /**
-     * @return \AppBundle\Entity\Customers
+     * @return \AppBundle\Entity\Customer
      */
     public function getCustomer()
     {
@@ -101,9 +101,9 @@ class Sales
     }
 
     /**
-     * @param \AppBundle\Entity\Customers $customer
+     * @param \AppBundle\Entity\Customer $customer
      *
-     * @return Sales
+     * @return Sale
      */
     public function setCustomer($customer)
     {

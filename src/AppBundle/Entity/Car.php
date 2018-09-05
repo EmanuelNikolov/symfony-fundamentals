@@ -6,12 +6,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Cars
+ * Car
  *
  * @ORM\Table(name="cars")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CarsRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CarRepository")
  */
-class Cars
+class Car
 {
 
     /**
@@ -44,7 +44,7 @@ class Cars
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Parts", mappedBy="cars")
+     * @ORM\ManyToMany(targetEntity="Part", mappedBy="cars")
      */
     private $parts;
 
@@ -80,7 +80,7 @@ class Cars
     /**
      * @param string $make
      *
-     * @return Cars
+     * @return Car
      */
     public function setMake($make)
     {
@@ -99,7 +99,7 @@ class Cars
     /**
      * @param string $model
      *
-     * @return Cars
+     * @return Car
      */
     public function setModel($model)
     {
@@ -118,7 +118,7 @@ class Cars
     /**
      * @param int $travelledDistance
      *
-     * @return Cars
+     * @return Car
      */
     public function setTravelledDistance($travelledDistance)
     {

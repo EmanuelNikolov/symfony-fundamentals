@@ -2,11 +2,12 @@
 
 {% block body %}
     {% block homebutton %}{% endblock %}
-        
+
     <h1>Car Dealership</h1>
     <hr>
     <h2><a href="{{ path('customers_index') }}">Customers</a></h2>
     <h2><a href="{{ path('sales_index') }}">Sales</a></h2>
     <h2><a href="{{ path('sales_discounted') }}">Discounted Sales</a></h2>
     <h2><a href="{{ path('cars_index') }}">Cars</a></h2>
+    <h2><a href="{{ path('part_index') }}">Parts</a></h2>
 {% endblock %}

@@ -6,13 +6,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Parts
+ * Part
  *
  * @ORM\Table(name="parts", indexes={@ORM\Index(name="FK__suppliers", columns={"supplier_id"})})
  * @ORM\Entity
  */
-class Parts
+class Part
 {
+
+    const QUANTITY_DEFAULT = 1;
 
     /**
      * @var string
@@ -32,9 +34,13 @@ class Parts
     /**
      * @var integer
      *
-     * @ORM\Column(name="quantity", type="bigint", nullable=true)
+     * @ORM\Column(name="quantity",
+     *     type="bigint",
+     *     nullable=true,
+     *     options={"default":1}
+     * )
      */
-    private $quantity;
+    private $quantity = self::QUANTITY_DEFAULT;
 
     /**
      * @var integer
@@ -46,9 +52,9 @@ class Parts
     private $id;
 
     /**
-     * @var \AppBundle\Entity\Suppliers
+     * @var \AppBundle\Entity\Supplier
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Suppliers", inversedBy="parts")
+     * @ORM\ManyToOne(targetEntity="Supplier", inversedBy="parts")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="supplier_id", referencedColumnName="id")
      * })
@@ -56,7 +62,7 @@ class Parts
     private $supplier;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Cars", inversedBy="parts")
+     * @ORM\ManyToMany(targetEntity="Car", inversedBy="parts")
      * @ORM\JoinTable(
      *     name="parts_cars",
      *     joinColumns={
@@ -101,7 +107,7 @@ class Parts
     /**
      * @param string $name
      *
-     * @return Parts
+     * @return Part
      */
     public function setName($name)
     {
@@ -120,7 +126,7 @@ class Parts
     /**
      * @param float $price
      *
-     * @return Parts
+     * @return Part
      */
     public function setPrice($price)
     {
@@ -139,7 +145,7 @@ class Parts
     /**
      * @param int $quantity
      *
-     * @return Parts
+     * @return Part
      */
     public function setQuantity($quantity)
     {
@@ -148,7 +154,7 @@ class Parts
     }
 
     /**
-     * @return \AppBundle\Entity\Suppliers
+     * @return \AppBundle\Entity\Supplier
      */
     public function getSupplier()
     {
@@ -156,9 +162,9 @@ class Parts
     }
 
     /**
-     * @param \AppBundle\Entity\Suppliers $supplier
+     * @param \AppBundle\Entity\Supplier $supplier
      *
-     * @return Parts
+     * @return Part
      */
     public function setSupplier($supplier)
     {

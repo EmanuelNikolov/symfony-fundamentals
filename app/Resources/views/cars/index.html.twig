@@ -8,9 +8,8 @@
             <tr>
                 <th>Make</th>
                 <th>Model</th>
-                <th>Travelleddistance</th>
+                <th>Travelled Distance</th>
                 <th>Id</th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -20,13 +19,6 @@
                 <td>{{ car.model }}</td>
                 <td>{{ car.travelledDistance }}</td>
                 <td>{{ car.id }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('cars_show', { 'id': car.id }) }}">show</a>
-                        </li>
-                    </ul>
-                </td>
             </tr>
         {% endfor %}
         </tbody>
