@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Part</h1>
+
+    <div class="mb-3">
+        <a href="{{ path('part_edit', { 'id': part.id }) }}">Edit</a>
+    </div>
+
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <th>Name</th>
+            <td>{{ part.name }}</td>
+        </tr>
+        <tr>
+            <th>Price</th>
+            <td>{{ part.price }}</td>
+        </tr>
+        <tr>
+            <th>Quantity</th>
+            <td>{{ part.quantity }}</td>
+        </tr>
+        <tr>
+            <th>Id</th>
+            <td>{{ part.id }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div>
+        {{ form(delete_form) }}
+    </div>
+
+    <div>
+        <a href="{{ path('part_index') }}">Back to the list</a>
+    </div>
+
+{% endblock %}

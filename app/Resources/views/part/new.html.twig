@@ -1,0 +1,11 @@
+{% extends 'default/form.html.twig' %}
+
+{% block form %}
+    <h1>New Part</h1>
+
+    {{ form(form) }}
+
+    <div>
+        <a href="{{ path('part_index') }}">Back to the list</a>
+    </div>
+{% endblock %}
