@@ -89,7 +89,9 @@ class CustomersController extends Controller
     }
 
     /**
-     * @Route("/add", name="customer_add")
+     * Creates a new car entity.
+     *
+     * @Route("/new", name="customer_new", methods={"GET", "POST"})
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -115,18 +117,20 @@ class CustomersController extends Controller
     }
 
     /**
-     * @Route("/edit/{id}", name="customer_edit", requirements={"id" = "\d+"})
+     * Displays a form to edit an existing car entity.
+     *
+     * @Route("/edit/{id}",
+     *     name="customer_edit",
+     *     methods={"GET", "POST"},
+     *     requirements={"id" = "\d+"}
+     * )
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int $id
+     * @param \AppBundle\Entity\Customer $customer
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, int $id)
+    public function editAction(Request $request, Customer $customer)
     {
-        $customer = $this->getDoctrine()
-          ->getRepository(Customer::class)
-          ->find($id);
-
         if (null === $customer) {
             throw new NotFoundHttpException("No user with that ID exists.");
         }
@@ -140,7 +144,7 @@ class CustomersController extends Controller
             $em->flush();
 
             return $this->redirectToRoute("customers_show", [
-              'id' => $id,
+              'id' => $customer->getId(),
             ]);
         }
 

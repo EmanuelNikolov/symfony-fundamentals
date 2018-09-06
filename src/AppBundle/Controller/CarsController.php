@@ -3,7 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Car;
+use AppBundle\Entity\Part;
+use AppBundle\Form\CarType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,17 +31,55 @@ class CarsController extends Controller
 
         $cars = $em->getRepository(Car::class)->findAll();
 
-
-
         return $this->render('cars/index.html.twig', [
           'cars' => $cars,
         ]);
     }
 
     /**
+     * Creates a new car entity
+     *
+     * @Route("/new", name="cars_new", methods={"GET", "POST"})
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function addAction(Request $request)
+    {
+        $car = new Car();
+        /*$part1 = $this->getDoctrine()
+          ->getRepository(Part::class)
+          ->find(rand(3, 15));
+
+        $car->getParts()->add($part1);
+        $part1->getCars()->add($car);*/
+
+        $form = $this->createForm(CarType::class, $car);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($car);
+            $em->flush();
+
+            return $this->redirectToRoute("cars_show", [
+              'id' => $car->getId(),
+            ]);
+        }
+
+        return $this->render("cars/new.html.twig", [
+          'form' => $form->createView(),
+        ]);
+    }
+
+    /**
      * Lists all car entities by make.
      *
-     * @Route("/{make}", name="cars_make", methods={"GET"})
+     * @Route("/show/{make}",
+     *     name="cars_make",
+     *     methods={"GET"},
+     *     requirements={"make" = "\D+"}
+     * )
      * @param string $make
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -62,14 +103,18 @@ class CarsController extends Controller
     /**
      * Finds and displays a car entity.
      *
-     * @Route("/show/{id}", name="cars_show", methods={"GET"})
+     * @Route("/show/{id}",
+     *    name="cars_show",
+     *    methods={"GET"},
+     *    requirements={"id" = "\d+"}
+     * )
+     *
      * @param \AppBundle\Entity\Car $car
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Car $car)
     {
-
         return $this->render('cars/show.html.twig', [
           'car' => $car,
         ]);

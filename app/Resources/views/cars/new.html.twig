@@ -1,0 +1,34 @@
+{% extends 'default/form.html.twig' %}
+
+{% block form %}
+    <h1>New Car</h1>
+
+    {{ form(form) }}
+
+    <div>
+        <a href="{{ path('cars_index') }}">Back to the list</a>
+    </div>
+{% endblock %}
+
+{# TODO: AJAX load the models
+{% block other_scripts %}
+    <script>
+            let $car = $('#appbundle_car_make');
+            $car.change(() => {
+                let $form = $(this).closest('form');
+                let data = {};
+                data[$car.attr('name')] = $car.val();
+
+                $.ajax({
+                    url: $form.attr('action'),
+                    type: $form.attr('method'),
+                    data: data,
+                    success: function (html) {
+                        $('#appbundle_car_model').replaceWith(
+                            $(html).find('#appbundle_car_model')
+                        )
+                    }
+                })
+            });
+    </script>
+{% endblock %}#}

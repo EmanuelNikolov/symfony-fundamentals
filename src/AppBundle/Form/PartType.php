@@ -29,7 +29,8 @@ class PartType extends AbstractType
           ])
           ->add('quantity', IntegerType::class, [
             'data' => Part::QUANTITY_DEFAULT,
-          ])->add('supplier', EntityType::class, [
+          ])
+          ->add('supplier', EntityType::class, [
             'class' => Supplier::class,
             'choice_label' => 'name',
           ])
@@ -53,7 +54,7 @@ class PartType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-          'data_class' => 'AppBundle\Entity\Part',
+          'data_class' => Part::class,
         ]);
     }
 

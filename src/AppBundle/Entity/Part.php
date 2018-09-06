@@ -4,12 +4,13 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Part
  *
  * @ORM\Table(name="parts", indexes={@ORM\Index(name="FK__suppliers", columns={"supplier_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\PartRepository")
  */
 class Part
 {
@@ -62,7 +63,7 @@ class Part
     private $supplier;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Car", inversedBy="parts")
+     * @ORM\ManyToMany(targetEntity="Car", inversedBy="parts", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="parts_cars",
      *     joinColumns={
@@ -170,6 +171,11 @@ class Part
     {
         $this->supplier = $supplier;
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }
 

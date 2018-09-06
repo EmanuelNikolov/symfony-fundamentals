@@ -44,7 +44,7 @@ class PartsController extends Controller
     public function addAction(Request $request)
     {
         $part = new Part();
-        $form = $this->createForm('AppBundle\Form\PartType', $part);
+        $form = $this->createForm(PartType::class, $part);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -58,7 +58,6 @@ class PartsController extends Controller
         }
 
         return $this->render('part/new.html.twig', [
-          'part' => $part,
           'form' => $form->createView(),
         ]);
     }
@@ -92,7 +91,6 @@ class PartsController extends Controller
      */
     public function editAction(Request $request, Part $part)
     {
-        $deleteForm = $this->createDeleteForm($part);
         $editForm = $this->createForm(PartType::class, $part);
         $editForm->handleRequest($request);
 
@@ -107,7 +105,6 @@ class PartsController extends Controller
         return $this->render('part/edit.html.twig', [
           'part' => $part,
           'edit_form' => $editForm->createView(),
-          'delete_form' => $deleteForm->createView(),
         ]);
     }
 

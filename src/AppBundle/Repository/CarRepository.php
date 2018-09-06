@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class CarRepository extends EntityRepository
 {
+
     public function getAllCarsByMake(string $make)
     {
         return $this->createQueryBuilder('c')
@@ -22,5 +23,19 @@ class CarRepository extends EntityRepository
           ->addOrderBy('c.travelledDistance', 'DESC')
           ->getQuery()
           ->getResult();
+    }
+
+    public function getAllMakes()
+    {
+        return $this->createQueryBuilder('c')
+          ->groupBy('c.make');
+    }
+
+    public function getAllModelsForMake()
+    {
+        return $this->createQueryBuilder('c')
+//          ->where('c.make = :make')
+//          ->setParameter('make', $make)
+          ->groupBy('c.model');
     }
 }

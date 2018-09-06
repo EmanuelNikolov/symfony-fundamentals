@@ -125,5 +125,10 @@ class Car
         $this->travelledDistance = $travelledDistance;
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->model;
+    }
 }
 
