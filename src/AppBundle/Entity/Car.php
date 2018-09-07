@@ -44,7 +44,16 @@ class Car
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Part", mappedBy="cars")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Part", inversedBy="cars", cascade={"persist"})
+     * @ORM\JoinTable(
+     *     name="parts_cars",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="car_id", referencedColumnName="id")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="part_id", referencedColumnName="id")
+     *     }
+     * )
      */
     private $parts;
 
@@ -59,6 +68,17 @@ class Car
     public function getParts()
     {
         return $this->parts;
+    }
+
+    /**
+     * @param \AppBundle\Entity\Part $part
+     *
+     * @return \AppBundle\Entity\Car
+     */
+    public function setParts(Part $part)
+    {
+        $this->parts->add($part);
+        return $this;
     }
 
     /**
@@ -124,11 +144,6 @@ class Car
     {
         $this->travelledDistance = $travelledDistance;
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->model;
     }
 }
 

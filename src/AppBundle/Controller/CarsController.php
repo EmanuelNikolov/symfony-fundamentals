@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Car;
 use AppBundle\Entity\Part;
 use AppBundle\Form\CarType;
+use AppBundle\Form\PartPickerType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -47,12 +48,6 @@ class CarsController extends Controller
     public function addAction(Request $request)
     {
         $car = new Car();
-        /*$part1 = $this->getDoctrine()
-          ->getRepository(Part::class)
-          ->find(rand(3, 15));
-
-        $car->getParts()->add($part1);
-        $part1->getCars()->add($car);*/
 
         $form = $this->createForm(CarType::class, $car);
         $form->handleRequest($request);

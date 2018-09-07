@@ -4,17 +4,12 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Car;
 use AppBundle\Entity\Part;
-use AppBundle\Repository\CarRepository;
-use AppBundle\Repository\PartRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CarType extends AbstractType
@@ -25,31 +20,14 @@ class CarType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('make', EntityType::class, [
-          'class' => Car::class,
-          'query_builder' => function (CarRepository $repo) {
-              return $repo->getAllMakes();
-          },
-          'choice_label' => 'make',
-          'placeholder' => '--- Please pick a Make ---',
-        ])
-          ->add('model', EntityType::class, [
-            'class' => Car::class,
-            'query_builder' => function (CarRepository $repo) {
-                return $repo->getAllModelsForMake();
-            },
-            'choice_label' => 'model',
-            'placeholder' => '--- Please pick a Model ---',
-          ])
+        $builder->add('make', TextType::class)
+          ->add('model', TextType::class)
           ->add('travelledDistance', IntegerType::class)
-          /*->add('parts', CollectionType::class, [
-            'entry_type' => PartPickerType::class,
-            'entry_options' => ['label' => false],
-          ])*/
           ->add('parts', EntityType::class, [
             'class' => Part::class,
             'choice_label' => 'name',
-              'mapped' => false
+            'multiple' => true,
+            'expanded' => true,
           ])
           ->add('submit', SubmitType::class);
 
@@ -98,6 +76,4 @@ class CarType extends AbstractType
     {
         return 'appbundle_car';
     }
-
-
 }

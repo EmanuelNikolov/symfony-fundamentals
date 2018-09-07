@@ -4,6 +4,10 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Car;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Internal\Hydration\HydrationException;
+use Doctrine\ORM\Internal\Hydration\ObjectHydrator;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr;
 
 /**
  * CarRepository
@@ -23,19 +27,5 @@ class CarRepository extends EntityRepository
           ->addOrderBy('c.travelledDistance', 'DESC')
           ->getQuery()
           ->getResult();
-    }
-
-    public function getAllMakes()
-    {
-        return $this->createQueryBuilder('c')
-          ->groupBy('c.make');
-    }
-
-    public function getAllModelsForMake()
-    {
-        return $this->createQueryBuilder('c')
-//          ->where('c.make = :make')
-//          ->setParameter('make', $make)
-          ->groupBy('c.model');
     }
 }
